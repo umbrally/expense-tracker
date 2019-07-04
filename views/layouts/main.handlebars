@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Expense Tracker</title>
+  <script src="https://kit.fontawesome.com/41999bb480.js"></script>
+  <link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <!-- navigation -->
+  <header id="header">
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand col-auto text-info text-xl" href="/">
+        <i class="fas fa-hand-holding-usd"></i>
+        家庭計帳本
+      </a>
+      <div class="col-auto text-right">
+        {{#if isAuthenticated}}
+        <a href="/users/logout" class="align-center badge badge-pill badge-warning text-monospace"
+          style="font-size: 17px">Logout
+          <i class="fas fa-sign-out-alt"></i></a>
+        {{else}}
+        <a href="/users/login" class="align-center badge badge-pill badge-warning text-monospace"
+          style="font-size: 17px">Login
+          <i class="fas fa-sign-in-alt"></i></a>
+        {{/if}}
+      </div>
+    </nav>
+
+    <div class="banner"></div>
+  </header>
+
+
+  {{{body}}}
+</body>
+
+</html>

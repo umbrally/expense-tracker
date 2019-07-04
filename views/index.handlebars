@@ -1,0 +1,61 @@
+<div class="container">
+  <form action="/records" method="GET">
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="selectMonth">月份</label>
+        <select id="selectMonth" class="form-control">
+          {{!-- 要自動帶入最新的月份並且default選現在的月份 --}}
+          {{#each months}}
+          <option>{{this}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="selectCategory">支出類別</label>
+        <select id="selectselectCategory" class="form-control">
+          <option>全部</option>
+          <option>家居物業</option><i class="fas fa-home"></i>
+          <option>交通出行 <i class="fas fa-shuttle-van"></i></option>
+          <option>休閒娛樂 <i class="fas fa-grin-beam"></i></option>
+          <option>餐飲食品 <i class="fas fa-utensils"></i></option>
+          <option>其他 <i class="fas fa-pen"></i></option>
+        </select>
+      </div>
+      <div class="submit form-group">
+        <button type="submit" class="btn btn-primary">確認</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <span class="col-md-2">總金額:</span>
+    <h1 class="text-warning col-md-4 text-center">{{totalAmount}}</h2>
+      <form action="/records/new" method="GET" class="col-md-2">
+        <button type="submit" class="btn btn-success">新增支出</button>
+      </form>
+  </div>
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">支出類別</th>
+          <th scope="col">支出名稱</th>
+          <th scope="col">日期</th>
+          <th scope="col">金額</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each records}}
+        <tr>
+          <td>{{{categoryIcon this.category}}}</td>
+          <td>{{this.name}}</td>
+          <td>{{{dateFormat this.date}}}</td>
+          <td>{{this.amount}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+
+</div>
