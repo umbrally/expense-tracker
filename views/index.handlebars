@@ -34,14 +34,17 @@
         <button type="submit" class="btn btn-success">新增支出</button>
       </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-8 table-responsive table-content">
     <table class="table table-striped">
       <thead>
-        <tr>
+        <tr class="bg-primary text-white" style="font-size: 20px">
           <th scope="col">支出類別</th>
           <th scope="col">支出名稱</th>
           <th scope="col">日期</th>
           <th scope="col">金額</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -51,6 +54,22 @@
           <td>{{this.name}}</td>
           <td>{{{dateFormat this.date}}}</td>
           <td>{{this.amount}}</td>
+          <td>
+            <form action="/records/{{this.id}}/edit" method="GET">
+              <button class="submit btn btn-outline-success">編輯</button>
+            </form>
+          </td>
+          <td>
+            <form action="/records/{{this.id}}/copy" method="GET">
+              <button class="submit btn btn-outline-warning">複製</button>
+            </form>
+          </td>
+          <td>
+            <form action="/records/{{this.id}}/?_method=DELETE" method="POST">
+              <button class="submit btn btn-outline-danger">刪除</button>
+            </form>
+          </td>
+
         </tr>
         {{/each}}
       </tbody>
