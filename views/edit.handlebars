@@ -1,0 +1,35 @@
+<div class="container w-50">
+  <h2 class="font-weight-bold bg-success text-white p-2 mt-4">編輯支出</h2>
+  <form action="/records/{{{record.id}}}?_method=PUT" method="POST" class="p-3 mb-3 border border-info">
+    <h6 class="mb-4">**所有欄位皆為必填**</h6>
+    <div class="form-group row">
+      <label for="name" class="col-md-2 col-form-label">支出名稱:</label>
+      <input type="text" class="form-control col-md-8" id="name" placeholder="名稱" name="name" value="{{{record.name}}}"
+        required>
+    </div>
+
+    <div class="form-group row">
+      <label for="category" class="col-md-2 col-form-label">支出類別:</label>
+      <select id="category" class="form-selection col-md-8" name="category" required>
+        <option {{{setSelected record.category '家居物業'}}}>家居物業</option>
+        <option {{{setSelected record.category '交通出行'}}}>交通出行</option>
+        <option {{{setSelected record.category '休閒娛樂'}}}>休閒娛樂</option>
+        <option {{{setSelected record.category '餐飲食品'}}}>餐飲食品</option>
+        <option {{{setSelected record.category '其他'}}}>其他</option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="col-md-2 col-form-label">日期:</label>
+      <input type="date" class="form-control col-md-8" id="name" placeholder="日期" name="date"
+        value="{{{dateFormat record.date}}}" required>
+    </div>
+
+    <div class="form-group row">
+      <label for="name" class="col-md-2 col-form-label">金額:</label>
+      <input type="text" class="form-control col-md-8" id="name" placeholder="金額" name="amount"
+        value="{{{record.amount}}}" required>
+    </div>
+    <button class="btn btn-success" type="submit">儲存變更</button>
+  </form>
+</div>

@@ -35,7 +35,7 @@ db.once('open', () => {
 // setting routes
 
 app.use('/', require('./routes/home.js'))
-// app.use('/records', require('./routes/record.js'))
+app.use('/records', require('./routes/record.js'))
 
 
 
