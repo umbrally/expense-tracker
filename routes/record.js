@@ -1,24 +1,23 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record.js')
-const categoryIcon = require('../helpers/category.js')
 const { dateFormat, dateFormatNoDate } = require('../helpers/date_format.js')
-const uniqueMonth = require('../helpers/uniqueMonth.js')
 const setSelected = require('../helpers/setSelected.js')
+const { authenticated } = require('../config/auth.js')
 
 
 // 列出全部 Todo
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
   return res.redirect('/')
 })
 
 // 新增一筆支出頁面
-router.get('/new', (req, res) => {
+router.get('/new', authenticated, (req, res) => {
   res.render('new', { helpers: { dateFormat, setSelected } })
 })
 
 // 新增一筆支出動作
-router.post('/', (req, res) => {
+router.post('/', authenticated, (req, res) => {
   const record = new Record({
     name: req.body.name,
     date: req.body.date,
@@ -36,9 +35,9 @@ router.post('/', (req, res) => {
 })
 
 // 複製支出的頁面
-router.get('/:id/copy', (req, res) => {
+router.get('/:id/copy', authenticated, (req, res) => {
   let reqParamsId = req.params.id
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+  Record.findOne({ userId: req.user._id, _id: req.params.id }, (err, record) => {
     if (err) {
       console.error(err)
       return res.send(400)
@@ -49,21 +48,21 @@ router.get('/:id/copy', (req, res) => {
 })
 
 // 編輯支出的頁面
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', authenticated, (req, res) => {
   let reqParamsId = req.params.id
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+  Record.findOne({ userId: req.user._id, _id: req.params.id }, (err, record) => {
     if (err) {
       console.error(err)
       return res.send(400)
     }
     console.log('date', record.date, typeof record.date)
-    return res.render('new', { reqParamsId, record, helpers: { dateFormat, setSelected } })
+    return res.render('edit', { reqParamsId, record, helpers: { dateFormat, setSelected } })
   })
 })
 
 // 儲存變更支出動作
-router.put('/:id', (req, res) => {
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+router.put('/:id', authenticated, (req, res) => {
+  Record.findOne({ userId: req.user._id, _id: req.params.id }, (err, record) => {
     if (err) {
       console.error(err)
       return res.send(500)
@@ -84,8 +83,8 @@ router.put('/:id', (req, res) => {
 })
 
 // 刪除支出動作
-router.delete('/:id', (req, res) => {
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+router.delete('/:id', authenticated, (req, res) => {
+  Record.findOne({ userId: req.user._id, _id: req.params.id }, (err, record) => {
     if (err) {
       console.error(err)
       return res.send(500)

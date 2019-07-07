@@ -4,11 +4,15 @@ const Record = require('../models/record.js')
 const categoryIcon = require('../helpers/category.js')
 const { dateFormat, dateFormatNoDate } = require('../helpers/date_format.js')
 const uniqueMonth = require('../helpers/uniqueMonth.js')
+const { authenticated } = require('../config/auth')
 
-router.get('/', (req, res) => {
-  const totalAmount = 20000
-  Record.find({}, (err, records) => {
+router.get('/', authenticated, (req, res) => {
+  Record.find({ userId: req.user._id }, (err, records) => {
     if (err) return log.error(err)
+    let totalAmount = 0
+    records.forEach(record => {
+      totalAmount += record.amount
+    })
     const months = records.map(record => {
       return record.date
     }).sort((a, b) => {
