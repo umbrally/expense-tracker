@@ -36,6 +36,7 @@ db.once('open', () => {
 
 app.use('/', require('./routes/home.js'))
 app.use('/records', require('./routes/record.js'))
+app.use('/users', require('./routes/user.js'))
 
 
 
