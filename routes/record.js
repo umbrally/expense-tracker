@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
     name: req.body.name,
     date: req.body.date,
     category: req.body.category,
-    amount: req.body.amount
+    amount: req.body.amount,
     userId: req.user._id
   })
   record.save(err => {
@@ -80,6 +80,23 @@ router.put('/:id', (req, res) => {
       }
       return res.redirect('/')
     }))
+  })
+})
+
+// 刪除支出動作
+router.delete('/:id', (req, res) => {
+  Record.findOne({ _id: req.params.id }, (err, record) => {
+    if (err) {
+      console.error(err)
+      return res.send(500)
+    }
+    record.remove(err => {
+      if (err) {
+        console.error(err)
+        return res.send(500)
+      }
+      return res.redirect('/')
+    })
   })
 })
 
