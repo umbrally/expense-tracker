@@ -5,6 +5,8 @@ const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const session = require('express-session')
+const passport = require('passport')
 
 
 // connect MongoDB
@@ -21,6 +23,19 @@ app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
+app.use(session({
+  secret: 'djkwej',
+  resave: 'false',
+  saveUninitialized: 'false'
+}))
+
+// 使用passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// 載入 Passport config
+require('./config/passport.js')(passport)
+
 
 
 // checking if database connected normally
