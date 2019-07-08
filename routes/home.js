@@ -10,19 +10,23 @@ const setSelected = require('../helpers/setSelected.js')
 router.get('/', authenticated, (req, res) => {
   Record.find({ userId: req.user._id }, (err, records) => {
     if (err) return log.error(err)
-    let totalAmount = 0
-    records.forEach(record => {
-      totalAmount += record.amount
-    })
-    const months = records.map(record => {
-      return record.date
-    }).sort((a, b) => {
-      return a - b
-    }).map(date => {
-      return dateFormatNoDate(date)
-    }).filter(uniqueMonth)
-    return res.render('index', { records, totalAmount, months, helpers: { categoryIcon, dateFormat, setSelected } })
   })
+    .sort({ date: 'asc' })
+    .exec((err, records) => {
+      if (err) return log.error(err)
+      let totalAmount = 0
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      const months = records.map(record => {
+        return record.date
+      }).sort((a, b) => {
+        return a - b
+      }).map(date => {
+        return dateFormatNoDate(date)
+      }).filter(uniqueMonth)
+      return res.render('index', { records, totalAmount, months, helpers: { categoryIcon, dateFormat, setSelected } })
+    })
 })
 
 module.exports = router

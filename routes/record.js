@@ -20,22 +20,27 @@ router.get('/', authenticated, (req, res) => {
     userId: req.user._id,
   }, (err, fullRecords) => {
     if (err) return log.error(err)
-    const records = fullRecords.filter(record => {
-      return (record.date >= dateStart) && (record.date < dateEnd) && (regExp.test(record.category))
-    })
-    let totalAmount = 0
-    records.forEach(record => {
-      totalAmount += record.amount
-    })
-    const months = fullRecords.map(record => {
-      return record.date
-    }).sort((a, b) => {
-      return a - b
-    }).map(date => {
-      return dateFormatNoDate(date)
-    }).filter(uniqueMonth)
-    return res.render('index', { records, totalAmount, months, month, category, helpers: { setSelected, categoryIcon, dateFormat } })
+
   })
+    .sort({ date: 'asc' })
+    .exec((err, fullRecords) => {
+      const records = fullRecords.filter(record => {
+        if (req.query.month) { return (record.date >= dateStart) && (record.date < dateEnd) && (regExp.test(record.category)) }
+        else { return (regExp.test(record.category)) }
+      })
+      let totalAmount = 0
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      const months = fullRecords.map(record => {
+        return record.date
+      }).sort((a, b) => {
+        return a - b
+      }).map(date => {
+        return dateFormatNoDate(date)
+      }).filter(uniqueMonth)
+      return res.render('index', { records, totalAmount, months, month, category, helpers: { setSelected, categoryIcon, dateFormat } })
+    })
 })
 
 // 新增一筆支出頁面

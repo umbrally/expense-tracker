@@ -6,8 +6,9 @@
         <select id="selectMonth" class="form-control" name="month">
           {{!-- 要自動帶入最新的月份並且default選現在的月份 --}}
           {{#if month}}
-          <option value="" disabled selected hidden> {{month}} </option>
+          <option selected hidden> {{month}} </option>
           {{/if}}
+          <option value="">全部</option>
           {{#each months}}
           <option>{{this}}</option>
           {{/each}}
