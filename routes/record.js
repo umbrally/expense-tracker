@@ -1,11 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const { validationResult } = require('express-validator')
 const Record = require('../models/record.js')
 const { dateFormat, dateFormatNoDate } = require('../helpers/date_format.js')
 const categoryIcon = require('../helpers/category.js')
 const uniqueMonth = require('../helpers/uniqueMonth.js')
 const setSelected = require('../helpers/setSelected.js')
 const { authenticated } = require('../config/auth.js')
+const { recordValidator } = require('../models/validator.js')
+
+
 
 
 // 篩選 record
@@ -49,7 +53,7 @@ router.get('/new', authenticated, (req, res) => {
 })
 
 // 新增一筆支出動作
-router.post('/', authenticated, (req, res) => {
+router.post('/', authenticated, recordValidator, (req, res) => {
   const record = new Record({
     name: req.body.name,
     date: req.body.date,
@@ -57,13 +61,25 @@ router.post('/', authenticated, (req, res) => {
     amount: req.body.amount,
     userId: req.user._id
   })
-  record.save(err => {
-    if (err) {
-      console.log(err)
-      return res.send(400)
-    }
-    return res.redirect('/')
-  })
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let errorsMessages = []
+    errors.array().forEach(error => {
+      errorsMessages.push({ message: error.msg })
+    })
+
+    return res.render('new', { errors: errorsMessages, helpers: { dateFormat, setSelected } })
+  }
+  else {
+    record.save(err => {
+      if (err) {
+        console.log(err)
+        return res.send(400)
+      }
+      req.flash('success_msg', '成功新增一筆支出')
+      res.redirect('/')
+    })
+  }
 })
 
 // 複製支出的頁面
@@ -92,7 +108,7 @@ router.get('/:id/edit', authenticated, (req, res) => {
 })
 
 // 儲存變更支出動作
-router.put('/:id', authenticated, (req, res) => {
+router.put('/:id', authenticated, recordValidator, (req, res) => {
   Record.findOne({ userId: req.user._id, _id: req.params.id }, (err, record) => {
     if (err) {
       console.error(err)
@@ -103,13 +119,25 @@ router.put('/:id', authenticated, (req, res) => {
     record.category = req.body.category
     record.amount = req.body.amount
     record.userId = req.user._id
-    record.save((err => {
-      if (err) {
-        console.error(err)
-        return res.send(500)
-      }
-      return res.redirect('/')
-    }))
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      let errorsMessages = []
+      errors.array().forEach(error => {
+        errorsMessages.push({ message: error.msg })
+      })
+
+      return res.render('edit', { errors: errorsMessages, reqParamsId, record, helpers: { dateFormat, setSelected } })
+    }
+    else {
+      record.save((err => {
+        if (err) {
+          console.error(err)
+          return res.send(500)
+        }
+        res.flash('success_msg', '成功修改一筆支出')
+        res.redirect('/')
+      }))
+    }
   })
 })
 
