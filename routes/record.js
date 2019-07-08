@@ -2,13 +2,40 @@ const express = require('express')
 const router = express.Router()
 const Record = require('../models/record.js')
 const { dateFormat, dateFormatNoDate } = require('../helpers/date_format.js')
+const categoryIcon = require('../helpers/category.js')
+const uniqueMonth = require('../helpers/uniqueMonth.js')
 const setSelected = require('../helpers/setSelected.js')
 const { authenticated } = require('../config/auth.js')
 
 
-// 列出全部 Todo
+// 篩選 record
 router.get('/', authenticated, (req, res) => {
-  return res.redirect('/')
+  const month = req.query.month
+  const category = req.query.category
+  const regExp = new RegExp(category, 'i')
+  const dateStart = new Date(req.query.month)
+  const dateEnd = new Date(req.query.month)
+  dateEnd.setMonth(dateEnd.getMonth() + 1)
+  Record.find({
+    userId: req.user._id,
+  }, (err, fullRecords) => {
+    if (err) return log.error(err)
+    const records = fullRecords.filter(record => {
+      return (record.date >= dateStart) && (record.date < dateEnd) && (regExp.test(record.category))
+    })
+    let totalAmount = 0
+    records.forEach(record => {
+      totalAmount += record.amount
+    })
+    const months = fullRecords.map(record => {
+      return record.date
+    }).sort((a, b) => {
+      return a - b
+    }).map(date => {
+      return dateFormatNoDate(date)
+    }).filter(uniqueMonth)
+    return res.render('index', { records, totalAmount, months, month, category, helpers: { setSelected, categoryIcon, dateFormat } })
+  })
 })
 
 // 新增一筆支出頁面
@@ -55,7 +82,6 @@ router.get('/:id/edit', authenticated, (req, res) => {
       console.error(err)
       return res.send(400)
     }
-    console.log('date', record.date, typeof record.date)
     return res.render('edit', { reqParamsId, record, helpers: { dateFormat, setSelected } })
   })
 })
