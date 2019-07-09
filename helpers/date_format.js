@@ -1,5 +1,3 @@
-const Record = require('../models/record.js')
-
 module.exports = {
   dateFormat: (value) => {
     const year = value.getFullYear()
