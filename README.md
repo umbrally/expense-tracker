@@ -3,6 +3,7 @@
 Expense-tracker
 
 # Snapshot
+![image](https://github.com/umbrally/expense-tracker/blob/master/snapshot.PNG)
 
 ## Getting Started
 
