@@ -1,5 +1,5 @@
 <div class="container">
-  {{> messages}}
+
   <form action="/records" method="GET" class="filter">
     <div class="row justify-content-center">
       <div class="form-group col-md-3">
@@ -32,11 +32,11 @@
       </div>
     </div>
   </form>
-  <div class="row total-amount pl-3">
+  <div class="row total-amount pl-3 mb-4">
     <h4 class="text-center text-info">總金額: <span class="text-danger ml-3">{{totalAmount}}</span> </h2>
   </div>
-
-  <div class="row justify-content-center mb-3">
+  {{> messages}}
+  <div class="row justify-content-center mb-3 mt-1">
     <div class="col-md-8 table-responsive table-content mt-2">
       <table class="table table-striped bg-secondary">
         <thead>

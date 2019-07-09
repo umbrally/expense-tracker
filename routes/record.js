@@ -134,7 +134,7 @@ router.put('/:id', authenticated, recordValidator, (req, res) => {
           console.error(err)
           return res.send(500)
         }
-        res.flash('success_msg', '成功修改一筆支出')
+        req.flash('success_msg', '成功修改一筆支出')
         res.redirect('/')
       }))
     }

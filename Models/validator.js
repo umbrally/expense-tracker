@@ -17,8 +17,8 @@ module.exports = {
       .exists()
       .isISO8601()
       .custom(value => {
-        console.log(value, new Date(2000 - 01 - 01))
-        return value > new Date(2000 - 01 - 01)
+        console.log(new Date(value), new Date(2000, 0, 1, 8))
+        return new Date(value) > new Date(2000, 0, 1, 8)
       })
       .withMessage('請確認日期輸入格式是否正確'),
     body('amount')
