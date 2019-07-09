@@ -1,3 +1,7 @@
+body {
+  background-color: beige
+}
+
 header {
   overflow: hidden;
 }
@@ -10,16 +14,46 @@ header {
   color: #226089;
 }
 
+.container {
+background-color: rgba(255,255,255,0.5)
+}
+
+.row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.total-amount {
+  background-color: rgba(123, 188, 214, 0.541);
+  height: 50px;
+  border-radius: 10px;
+}
+
+.total-amount h4 {
+  line-height: 50px;
+  margin-bottom: 0px;
+  
+}
+
+.filter {
+  background-color: rgba(108, 28, 199, 0.692);
+  color: white;
+  border-radius: 10px;
+}
 .banner {
   position: relative;
   z-index: -1;
   margin: -5px;
   height: 360px;
-  background: #dddddd center center url('https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg');
+  background: #dddddd center center url('https://images.pexels.com/photos/917460/pexels-photo-917460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
   background-size: cover;
+  background-position: center;
   filter: blur(3px);
 }
 
+.total-amount {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
 select {
   font-family: 'Font Awesome\ 5 Free';
@@ -34,6 +68,5 @@ select {
 .table-content {
 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 padding: 20px
-
 
 }
